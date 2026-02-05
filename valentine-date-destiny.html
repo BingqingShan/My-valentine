@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Date Destiny | Love and Deepspace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --xavier-blue: #3B82F6;
+            --zayne-green: #10B981;
+            --rafayel-purple: #8B5CF6;
+            --sylus-red: #DC2626;
+            --caleb-orange: #F59E0B;
+            --valentine-pink: #FF69B4;
+            --valentine-red: #FF1744;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1a0a1e 0%, #2d1b3d 50%, #4a1942 100%);
+            color: #FFF;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated hearts background */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.3;
+            animation: floatHeart 15s infinite;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Sparkles */
+        .sparkles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkleAnim 2s infinite;
+        }
+
+        @keyframes sparkleAnim {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 2rem 0 1rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .valentine-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--valentine-pink), var(--valentine-red));
+            padding: 0.6rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(255, 105, 180, 0.5);
+            animation: pulse 2s infinite;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 50%, #FF1744 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #FFB6C1;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .tagline {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3rem;
+            color: #FFF;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* Instructions */
+        .instruction-box {
+            text-align: center;
+            margin: 3rem auto;
+            max-width: 800px;
+            padding: 2.5rem;
+            background: rgba(255, 105, 180, 0.15);
+            border: 2px solid rgba(255, 105, 180, 0.4);
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .instruction-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            color: var(--valentine-pink);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .instruction-text {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: #FFE4E1;
+        }
+
+        /* Card Area */
+        .card-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 600px;
+            perspective: 1500px;
+            margin: 3rem 0;
+        }
+
+        .card-back {
+            width: 350px;
+            height: 520px;
+            background: linear-gradient(135deg, #2d1b3d 0%, #4a1942 100%);
+            border-radius: 25px;
+            border: 4px solid var(--valentine-pink);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            box-shadow: 0 30px 80px rgba(255, 105, 180, 0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .card-back:hover {
+            transform: translateY(-20px) scale(1.08);
+            box-shadow: 0 40px 100px rgba(255, 105, 180, 0.7);
+            border-color: var(--valentine-red);
+        }
+
+        .card-back::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.4) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .card-back-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .card-symbol {
+            font-size: 6rem;
+            margin-bottom: 1.5rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.15); }
+            50% { transform: scale(1); }
+        }
+
+        .card-back-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            text-align: center;
+            letter-spacing: 3px;
+            color: #FFB6C1;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .card-back-text {
+            font-size: 1.1rem;
+            text-align: center;
+            color: #FFE4E1;
+            line-height: 1.8;
+        }
+
+        /* Card Front - Horizontal Flip */
+        .card-front {
+            width: 380px;
+            background: linear-gradient(135deg, #1a0a1e 0%, #2d1b3d 100%);
+            border-radius: 25px;
+            border: 4px solid;
+            padding: 2.5rem;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.9);
+            animation: horizontalFlip 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes horizontalFlip {
+            0% {
+                opacity: 0;
+                transform: rotateY(-90deg) scale(0.8);
+            }
+            50% {
+                transform: rotateY(0deg) scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: rotateY(0deg) scale(1);
+            }
+        }
+
+        .card-front::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(255, 105, 180, 0.2), transparent 60%);
+            pointer-events: none;
+        }
+
+        .character-name-big {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 1rem 0 2rem;
+            background: linear-gradient(135deg, #FFB6C1, #FF1744);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
+        }
+
+        .date-reason-section {
+            background: rgba(255, 105, 180, 0.1);
+            border: 2px solid;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .reason-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--valentine-pink);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .reason-text {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: #FFE4E1;
+            text-align: center;
+        }
+
+        .character-message {
+            margin-top: 1.5rem;
+            padding: 1.8rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            border: 2px solid;
+            animation: fadeIn 0.5s ease-out 1s both;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .message-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.2rem;
+            line-height: 1.9;
+            color: #FFF;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .draw-button {
+            padding: 1.4rem 3.5rem;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--valentine-pink), var(--valentine-red));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 40px rgba(255, 23, 68, 0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .draw-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .draw-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .draw-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(255, 23, 68, 0.8);
+        }
+
+        .share-button {
+            padding: 1.2rem 3rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: rgba(255, 105, 180, 0.25);
+            backdrop-filter: blur(10px);
+            color: #FFF;
+            border: 3px solid var(--valentine-pink);
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .share-button:hover {
+            background: rgba(255, 105, 180, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
+        }
+
+        /* Screen Shake */
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-12px, -12px); }
+            20% { transform: translate(12px, 12px); }
+            30% { transform: translate(-12px, 12px); }
+            40% { transform: translate(12px, -12px); }
+            50% { transform: translate(-12px, -12px); }
+            60% { transform: translate(12px, 12px); }
+            70% { transform: translate(-12px, 12px); }
+            80% { transform: translate(12px, -12px); }
+            90% { transform: translate(-12px, 0); }
+        }
+
+        .screen-shake {
+            animation: screenShake 0.6s ease-in-out;
+        }
+
+        /* Particle Effect */
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .particle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: gold;
+            border-radius: 50%;
+            animation: particleFloat 2.5s ease-out forwards;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-250px) scale(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: #FFB6C1;
+            font-size: 1rem;
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .card-back, .card-front {
+                width: 300px;
+            }
+
+            .card-back {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <!-- Sparkles -->
+    <div class="sparkles" id="sparklesContainer"></div>
+
+    <!-- Particle Container -->
+    <div class="particle-container" id="particleContainer"></div>
+
+    <div class="container">
+        <header>
+            <div class="valentine-badge">💝 Valentine's Special 💝</div>
+            <h1>Date Destiny</h1>
+            <p class="subtitle">Love and Deepspace</p>
+            <p class="tagline">Who will you spend Valentine's Day with?</p>
+        </header>
+
+        <div class="instruction-box">
+            <div class="instruction-title">💕 Discover Your Valentine's Date 💕</div>
+            <div class="instruction-text">
+                Draw a card from the deck of destiny...<br>
+                The stars will reveal which companion fate has chosen for your Valentine's Day<br>
+                and the reason why you're destined to be together ✨
+            </div>
+        </div>
+
+        <div class="card-area" id="cardArea">
+            <div class="card-back" id="cardBack">
+                <div class="card-back-content">
+                    <div class="card-symbol">💖</div>
+                    <div class="card-back-title">Your Destiny Awaits</div>
+                    <div class="card-back-text">Click to reveal your<br>Valentine's Day date!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="draw-button" id="drawButton" style="display: none;">💘 Draw Again</button>
+            <button class="share-button" id="shareButton" style="display: none;">💌 Share Your Date</button>
+        </div>
+
+        <footer>
+            💝 Made with love for Love and Deepspace fans 💝<br>
+            May destiny guide your heart this Valentine's Day
+        </footer>
+    </div>
+
+    <script>
+        // Character data
+        const characters = {
+            Xavier: {
+                color: '#3B82F6',
+                emoji: '⭐',
+                dateReasons: [
+                    "The stars aligned to bring you together. Xavier has waited lifetimes to spend this day with someone like you.",
+                    "Your souls resonate at the same frequency. He'll make Valentine's Day feel like eternity condensed into one perfect moment.",
+                    "Fate chose Xavier because you both understand that true love transcends time and space.",
+                    "The universe knew you needed someone who would wait forever for you. Xavier is that person.",
+                    "Your light and his have been searching for each other across countless timelines. Today, they finally meet."
+                ],
+                messages: [
+                    "I've crossed time itself to be here with you. Happy Valentine's Day.",
+                    "Every lifetime, I find you again. This one is no exception.",
+                    "The stars told me you'd be here. I've been waiting.",
+                    "Time means nothing when I'm with you. Let's make this day last forever.",
+                    "I promise to protect your heart as I've done through every timeline."
+                ]
+            },
+            Zayne: {
+                color: '#10B981',
+                emoji: '❄️',
+                dateReasons: [
+                    "Your heart rate spikes when he's near - scientifically significant. Zayne will ensure this Valentine's Day is carefully planned and perfectly executed.",
+                    "Fate prescribed Zayne as your Valentine because you need someone who cares for your wellbeing above all else.",
+                    "The diagnosis is clear: you and Zayne have undeniable chemistry. He'll treat your heart with medical precision.",
+                    "Destiny chose someone reliable and caring. Zayne will make sure this Valentine's Day exceeds all expectations.",
+                    "Your souls share the same wavelength. Zayne understands you need someone who shows love through actions, not just words."
+                ],
+                messages: [
+                    "I've scheduled the entire day for us. No interruptions. Doctor's orders.",
+                    "Your happiness is my priority. Let me take care of everything today.",
+                    "I don't make promises I can't keep. I promise to make this memorable.",
+                    "Take my hand. I'll show you what Valentine's Day should really feel like.",
+                    "The treatment plan for today: quality time, genuine connection, and... perhaps something sweet."
+                ]
+            },
+            Rafayel: {
+                color: '#8B5CF6',
+                emoji: '🎨',
+                dateReasons: [
+                    "The ocean currents of fate brought you to Rafayel. He'll paint your Valentine's Day with colors you've never seen before.",
+                    "Destiny knew you needed someone who sees the art in everything - especially in you. Rafayel will make this day a masterpiece.",
+                    "You promised him forever, even if you don't remember. Valentine's Day is just the beginning of reclaiming that bond.",
+                    "The universe chose Rafayel because only an artist can truly appreciate the beauty of your soul.",
+                    "Like the tides, you were always meant to return to each other. This Valentine's Day is your reunion."
+                ],
+                messages: [
+                    "You're my greatest masterpiece. Let me show you off today.",
+                    "I've waited so long for this. Don't make me wait any longer, cutie.",
+                    "The ocean brought us together. Let's make waves this Valentine's Day.",
+                    "I'll create a day so beautiful, you'll never forget it. Or me.",
+                    "You inspire me more than any canvas ever could. Happy Valentine's Day, my muse."
+                ]
+            },
+            Sylus: {
+                color: '#DC2626',
+                emoji: '👑',
+                dateReasons: [
+                    "Power recognizes power. Sylus claimed you as his Valentine because you're the only one worthy of standing beside him.",
+                    "Fate chose someone who would never let you go. Sylus will make sure you remember this Valentine's Day forever.",
+                    "You belong with someone who matches your intensity. Sylus will give you a Valentine's Day as dangerous as it is romantic.",
+                    "Destiny decided you needed someone who isn't afraid of the darkness. Sylus will show you that love can thrive in shadows.",
+                    "The universe knew you required someone powerful enough to protect what's his. Today, you're his Valentine."
+                ],
+                messages: [
+                    "You're mine today. And every day after. Happy Valentine's Day, sweetie.",
+                    "I don't share. Today, you're all mine. No negotiations.",
+                    "The N109 Zone's most dangerous man just became yours. Use that power wisely.",
+                    "I've planned everything. All you need to do is say yes.",
+                    "Love is the most powerful weapon. And I'm aiming it directly at you."
+                ]
+            },
+            Caleb: {
+                color: '#F59E0B',
+                emoji: '☀️',
+                dateReasons: [
+                    "Fate knew you needed someone who makes you smile. Caleb will fill your Valentine's Day with laughter and adventure.",
+                    "The universe chose your childhood friend because some bonds are too strong to break. This Valentine's Day proves it.",
+                    "Destiny selected Caleb because you deserve someone who knows you better than anyone else - and loves you anyway.",
+                    "The stars aligned to show you that love was right in front of you all along. Caleb's been waiting for this moment.",
+                    "Fate decided it was time to stop pretending. Caleb has always been your Valentine, whether you realized it or not."
+                ],
+                messages: [
+                    "Finally! I've been waiting forever for you to be my Valentine!",
+                    "Pipsqueak, let's make this the best Valentine's Day ever!",
+                    "I know you better than anyone. Trust me - today's going to be amazing.",
+                    "Remember when we used to dream about days like this? Let's make it real.",
+                    "You and me against the world. Happy Valentine's Day, partner."
+                ]
+            }
+        };
+
+        // Sound effects
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playCardFlip() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(500, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(250, audioContext.currentTime + 0.15);
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.15);
+        }
+
+        function playLegendarySound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(1046.50, audioContext.currentTime + 0.4);
+            
+            gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.6);
+        }
+
+        // Create hearts
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = ['💕', '💗', '💖', '💝', '💘'][Math.floor(Math.random() * 5)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
+                container.appendChild(heart);
+            }
+        }
+
+        // Create sparkles
+        function createSparkles() {
+            const container = document.getElementById('sparklesContainer');
+            for (let i = 0; i < 40; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(sparkle);
+            }
+        }
+
+        createHearts();
+        createSparkles();
+
+        // Draw card
+        const cardBack = document.getElementById('cardBack');
+        const cardArea = document.getElementById('cardArea');
+        const drawButton = document.getElementById('drawButton');
+        const shareButton = document.getElementById('shareButton');
+        let currentCharacter = null;
+
+        cardBack.addEventListener('click', drawCard);
+        drawButton.addEventListener('click', () => location.reload());
+
+        function drawCard() {
+            // Play sounds
+            playCardFlip();
+            playLegendarySound();
+
+            // Random character
+            const characterNames = Object.keys(characters);
+            const randomName = characterNames[Math.floor(Math.random() * characterNames.length)];
+            currentCharacter = { name: randomName, ...characters[randomName] };
+
+            // Screen shake and particles
+            screenShake();
+            createParticles();
+
+            // Create card
+            const cardFront = createCardFront(currentCharacter);
+
+            // Replace
+            cardArea.innerHTML = '';
+            cardArea.appendChild(cardFront);
+
+            // Show buttons
+            setTimeout(() => {
+                drawButton.style.display = 'inline-block';
+                shareButton.style.display = 'inline-block';
+            }, 1000);
+        }
+
+        function createCardFront(char) {
+            const cardFront = document.createElement('div');
+            cardFront.className = 'card-front';
+            cardFront.style.borderColor = char.color;
+
+            const reason = char.dateReasons[Math.floor(Math.random() * char.dateReasons.length)];
+            const message = char.messages[Math.floor(Math.random() * char.messages.length)];
+
+            cardFront.innerHTML = `
+                <div class="character-name-big">${char.emoji} ${char.name} ${char.emoji}</div>
+                <div class="date-reason-section" style="border-color: ${char.color}">
+                    <div class="reason-title">Why ${char.name}?</div>
+                    <div class="reason-text">${reason}</div>
+                </div>
+                <div class="character-message" style="border-color: ${char.color}">
+                    <div class="message-header" style="color: ${char.color}">
+                        💕 ${char.name}'s Valentine Message 💕
+                    </div>
+                    <div class="message-text">"${message}"</div>
+                </div>
+            `;
+
+            return cardFront;
+        }
+
+        function screenShake() {
+            document.body.classList.add('screen-shake');
+            setTimeout(() => {
+                document.body.classList.remove('screen-shake');
+            }, 600);
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particleContainer');
+            const colors = ['#FFD700', '#FFA500', '#FF69B4', '#FF1744', '#FFF'];
+            
+            for (let i = 0; i < 60; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = (Math.random() * 100) + '%';
+                particle.style.top = (Math.random() * 100) + '%';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = Math.random() * 0.4 + 's';
+                container.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 2500);
+            }
+        }
+
+        // Share
+        shareButton.addEventListener('click', () => {
+            if (!currentCharacter) return;
+
+            const shareText = `💝 Valentine's Date Destiny 💝
+
+My Valentine's Day date is: ${currentCharacter.emoji} ${currentCharacter.name} ${currentCharacter.emoji}
+
+The stars have spoken! Fate chose ${currentCharacter.name} as my Valentine because we're destined to be together.
+
+✨ Draw your own Valentine's date at Love and Deepspace Tarot! ✨`;
+
+            navigator.clipboard.writeText(shareText).then(() => {
+                shareButton.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    shareButton.textContent = '💌 Share Your Date';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
