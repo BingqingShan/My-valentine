@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="discord-client-id" content="YOUR_DISCORD_CLIENT_ID">
     <title>Valentine's Date Destiny | Love and Deepspace</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -764,6 +763,26 @@
         const shareButton = document.getElementById('shareButton');
         let currentCharacter = null;
 
+        // Shuffle bag for equal character distribution
+        let characterBag = [];
+        
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+        
+        function getNextCharacter() {
+            // Refill and shuffle bag when empty
+            if (characterBag.length === 0) {
+                characterBag = shuffleArray(Object.keys(characters));
+            }
+            return characterBag.pop();
+        }
+
         cardBack.addEventListener('click', drawCard);
         drawButton.addEventListener('click', () => location.reload());
 
@@ -772,9 +791,8 @@
             playCardFlip();
             playLegendarySound();
 
-            // Random character
-            const characterNames = Object.keys(characters);
-            const randomName = characterNames[Math.floor(Math.random() * characterNames.length)];
+            // Get next character from shuffle bag (ensures equal distribution)
+            const randomName = getNextCharacter();
             currentCharacter = { name: randomName, ...characters[randomName] };
 
             // Screen shake and particles
@@ -867,67 +885,5 @@ The stars have spoken! Fate chose ${currentCharacter.name} as my Valentine becau
     
     <!-- Vercel Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
-    
-    <!-- Discord Activity SDK Integration -->
-    <script type="module">
-        // Only initialize Discord SDK if running inside Discord iframe
-        const isRunningInDiscord = window.location.search.includes('frame_id') || 
-                                   window.location.search.includes('instance_id') ||
-                                   window.parent !== window;
-        
-        if (isRunningInDiscord) {
-            // Dynamically import Discord SDK from CDN
-            import('https://esm.sh/@discord/embedded-app-sdk@1.4.0').then(async ({ DiscordSDK }) => {
-                // Get client ID from meta tag or use placeholder
-                const clientId = document.querySelector('meta[name="discord-client-id"]')?.content;
-                
-                if (!clientId) {
-                    console.log('Discord Activity: No client ID configured');
-                    return;
-                }
-                
-                console.log('Discord Activity: Initializing SDK...');
-                const discordSdk = new DiscordSDK(clientId);
-                
-                try {
-                    // Wait for SDK to be ready
-                    await discordSdk.ready();
-                    console.log('Discord Activity: SDK ready');
-                    
-                    // Authorize with Discord
-                    const { code } = await discordSdk.commands.authorize({
-                        client_id: clientId,
-                        response_type: 'code',
-                        state: '',
-                        prompt: 'none',
-                        scope: ['identify', 'guilds']
-                    });
-                    
-                    // Exchange code for access token via our API
-                    const response = await fetch('/api/token', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ code })
-                    });
-                    
-                    const { access_token } = await response.json();
-                    
-                    // Authenticate with Discord
-                    const auth = await discordSdk.commands.authenticate({ access_token });
-                    
-                    if (auth) {
-                        console.log('Discord Activity: Authenticated as', auth.user.username);
-                        
-                        // Optional: Update share text to include Discord username
-                        window.discordUser = auth.user;
-                    }
-                } catch (error) {
-                    console.error('Discord Activity: Error during setup', error);
-                }
-            }).catch(err => {
-                console.log('Discord Activity: SDK not available', err);
-            });
-        }
-    </script>
 </body>
 </html>
